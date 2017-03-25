@@ -10,8 +10,9 @@ window.addEventListener('load', init);
 var canvas;
 var ctx;
 var lastTimestamp = null;
+
 var mouse = new Vector();
-var player = new Vector();
+var player = new Player();
 // モーション用変数
 
 
@@ -93,7 +94,7 @@ function update (timestamp) {
   lastTimestamp = timestamp;
 
   // ここに移動等を書く
-  player = mouse;
+  playerMovement(delta);
   // ここまで
   requestAnimationFrame(update);
   render();
@@ -106,8 +107,16 @@ function render () {
   // 表示クリア
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // 背景表示
+
   // Player表示
   playerRender();
+}
+
+function playerMovement (delta) {
+  player.move.x += ((mouse.x - player.x) - (6 * player.move.x)) / 5 * delta;
+  player.move.y += ((mouse.y - player.y) - (6 * player.move.y)) / 5 * delta;
+  player.x += player.move.x;
+  player.y += player.move.y;
 }
 
 function playerRender () {
