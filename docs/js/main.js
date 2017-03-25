@@ -2,8 +2,8 @@
  * Main
  */
 
-var SCREEN_WIDTH = 800;
-var SCREEN_HEIGHT = 600;
+var SCREEN_WIDTH = window.innerWidth - 20;
+var SCREEN_HEIGHT = window.innerHeight - 30;
 
 window.addEventListener('load', init);
 
