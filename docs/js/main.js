@@ -1,3 +1,7 @@
+/**
+ * Main
+ */
+
 var SCREEN_WIDTH = 800;
 var SCREEN_HEIGHT = 600;
 
@@ -6,10 +10,10 @@ window.addEventListener('load', init);
 var canvas;
 var ctx;
 var lastTimestamp = null;
-
+var mouse = new Vector();
+var player = new Vector();
 // モーション用変数
-var mikanX = 0;
-var mikanY = 0;
+
 
 
 // アセット定義
@@ -61,10 +65,16 @@ Asset._loadImage = function(asset, onLoad) {
  * 初期化
  */
 function init () {
+  // スクリーンの初期化
   canvas = document.getElementById('mainCanvas');
   ctx = canvas.getContext('2d');
   canvas.width = SCREEN_WIDTH;
   canvas.height = SCREEN_HEIGHT;
+
+  // イベントの登録
+  canvas.addEventListener('mousemove', mouseMove, true);
+
+  // アセットの読み込み
   Asset.loadAssets(function() {
     // アセットがすべて読み込み終わったら、
     // ゲームの更新処理を始めるようにする
@@ -83,8 +93,7 @@ function update (timestamp) {
   lastTimestamp = timestamp;
 
   // ここに移動等を書く
-  mikanX += 100 * delta;
-  mikanY += 100 * delta;
+  player = mouse;
   // ここまで
   requestAnimationFrame(update);
   render();
@@ -97,7 +106,13 @@ function render () {
   // 表示クリア
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // 背景表示
-  ctx.drawImage(Asset.images['back'], 0, 0);
-  // 箱表示
-  ctx.drawImage(Asset.images['box'], mikanX, mikanY);
+  // Player表示
+  playerRender();
+}
+
+function playerRender () {
+  ctx.beginPath();
+  ctx.fillStyle = 'rgba(0, 0, 255, 0.75)';
+  ctx.arc(player.x, player.y, 10, 0, Math.PI * 2, false);
+  ctx.fill();
 }
