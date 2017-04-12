@@ -7,7 +7,9 @@ class Vector {
         this.y = 0;
     }
 }
-
+/**
+ * Player class
+ */
 class Player extends Vector {
     constructor() {
         super();
@@ -21,7 +23,12 @@ class Player extends Vector {
         return Math.sqrt(x2 + y2);
     }
 }
+/**
+ * Enemy class
+ */
+class Enemy extends Vector {
 
+}
 
 function speedLimit(dist) {
     if (dist > 0) {
