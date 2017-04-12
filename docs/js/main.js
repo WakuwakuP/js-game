@@ -2,20 +2,21 @@
  * Main
  */
 
-var SCREEN_WIDTH = window.innerWidth - 20;
-var SCREEN_HEIGHT = window.innerHeight - 30;
+var SCREEN_WIDTH = 800;
+var SCREEN_HEIGHT = 600;
 
 window.addEventListener('load', init);
 
 var canvas;
 var ctx;
-var lastTimestamp = null;
 
 var mouse = new Vector();
 var player = new Player();
+
 // モーション用変数
-
-
+var lastTimestamp = null;
+var delta = 0; // 前回フレーム時間からの経過時間(単位:秒)
+var timeCount = 0;
 
 // アセット定義
 var Asset = {};
@@ -87,14 +88,13 @@ function init() {
  * 更新
  */
 function update(timestamp) {
-    var delta = 0; // 前回フレーム時間からの経過時間(単位:秒)
     if (lastTimestamp != null) {
         delta = (timestamp - lastTimestamp) / 1000; // ミリ秒を1000で割ると秒になる(1000ミリ秒÷1000は1秒)
     }
     lastTimestamp = timestamp;
 
     // ここに移動等を書く
-    playerMovement(delta);
+    player.movement(delta);
     // ここまで
     requestAnimationFrame(update);
     render();
@@ -109,19 +109,5 @@ function render() {
     // 背景表示
 
     // Player表示
-    playerRender();
-}
-
-function playerMovement(delta) {
-    player.move.x += ((mouse.x - player.x) - (6 * player.move.x)) / 5 * delta;
-    player.move.y += ((mouse.y - player.y) - (6 * player.move.y)) / 5 * delta;
-    player.x += player.move.x;
-    player.y += player.move.y;
-}
-
-function playerRender() {
-    ctx.beginPath();
-    ctx.fillStyle = 'rgba(0, 0, 255, 0.75)';
-    ctx.arc(player.x, player.y, 10, 0, Math.PI * 2, false);
-    ctx.fill();
+    player.render();
 }

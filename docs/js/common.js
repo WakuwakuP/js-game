@@ -18,9 +18,23 @@ class Player extends Vector {
     }
 
     dist(Vector) {
-        var x2 = (aPoint.x - this.x) * (aPoint.x - this.x);
-        var y2 = (aPoint.y - this.y) * (aPoint.y - this.y);
-        return Math.sqrt(x2 + y2);
+            var x2 = (aPoint.x - this.x) * (aPoint.x - this.x);
+            var y2 = (aPoint.y - this.y) * (aPoint.y - this.y);
+            return Math.sqrt(x2 + y2);
+        }
+        // Playerの移動量を決定する
+    movement(delta) {
+            this.move.x += ((mouse.x - this.x) - (6 * this.move.x)) / 5 * delta;
+            this.move.y += ((mouse.y - this.y) - (6 * this.move.y)) / 5 * delta;
+            this.x += this.move.x;
+            this.y += this.move.y;
+        }
+        // Playerの表示をする
+    render() {
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(0, 0, 255, 0.75)';
+        ctx.arc(player.x, player.y, 10, 0, Math.PI * 2, false);
+        ctx.fill();
     }
 }
 /**
