@@ -27,7 +27,12 @@ class Player extends Vector {
  * Enemy class
  */
 class Enemy extends Vector {
-
+    constructor() {
+        super();
+        this.move = new Vector();
+        this.mode = 0;
+        this.alive = true;
+    }
 }
 
 function speedLimit(dist) {
