@@ -1,0 +1,28 @@
+[start Menu]
++ game title
++ start button
+---
+start button
+===> Games
+
+[Games]
++ play Game
+---
+finish Game
+==> Result
+
+[Result]
++ score preview
++ tweet button
++ exit button
+---
+exit button
+==> start Menu
+tweet button
+==> Tweet
+
+[Tweet]
++ tweet
+---
+finish tweet
+==>start Menu
