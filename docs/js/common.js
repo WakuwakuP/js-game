@@ -12,6 +12,7 @@ class Player extends Vector {
   constructor() {
     super();
     this.move = new Vector();
+    this.alive = true;
   }
 
    dist(Vector){
