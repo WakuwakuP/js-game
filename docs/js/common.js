@@ -30,8 +30,27 @@ class Enemy extends Vector {
     constructor() {
         super();
         this.move = new Vector();
-        this.mode = 0;
+        this.level = 1;
         this.alive = true;
+    }
+
+    // Enemyの移動量
+    movement(delta) {
+        switch (level) {
+            case 1:
+                //ここにlevel01の行動を書く
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Enemyの表示
+    render() {
+        ctx.biginPath();
+        ctx.fillStyle = 'rgba(255, 0, 0, 0.75)';
+        ctx.arc(this.x, this.y, 10, 0, Math.PI * 2, false);
+        ctx.fill();
     }
 }
 
