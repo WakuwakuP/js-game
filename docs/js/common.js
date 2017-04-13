@@ -103,6 +103,7 @@ class PassPoint extends Vector {
     }
 }
 
+
 function speedLimit(dist) {
     if (dist > 0) {
         if (dist > 20) {

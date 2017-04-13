@@ -18,6 +18,7 @@ for (i = 0; i < MAX_PASS_POINT; i++) {
     pass[i] = new PassPoint();
 }
 
+
 // モーション用変数
 var lastTimestamp = null;
 var delta = 0; // 前回フレーム時間からの経過時間(単位:秒)
@@ -128,7 +129,18 @@ function update(timestamp) {
 function render() {
     // 表示クリア
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // 背景表示
+    // エフェクト
+    /*
+    ctx.globalAlpha = 0.1;
+    ctx.fillStyle = '#A9D0F5';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalAlpha = 0.3;
+    */
+
+    // テキスト表示
+    ctx.font = '20px "Arial"';
+    ctx.fillStyle = "#00F";
+    ctx.fillText("SCORE:" + delta, 320, 20);
 
     // 通過点の表示
     for (i = 0; i < MAX_PASS_POINT; i++) {
