@@ -36,10 +36,10 @@ class Player extends Vector {
 
     // Playerの表示をする
     render() {
-        ctx.beginPath();
-        ctx.fillStyle = 'rgba(0, 0, 255, 0.75)';
-        ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2, false);
-        ctx.fill();
+        ctx2.beginPath();
+        ctx2.fillStyle = 'rgba(0, 0, 255, 0.75)';
+        ctx2.arc(player.x, player.y, player.size, 0, Math.PI * 2, false);
+        ctx2.fill();
     }
 }
 /**
@@ -66,10 +66,10 @@ class Enemy extends Vector {
 
     // Enemyの表示
     render() {
-        ctx.biginPath();
-        ctx.fillStyle = 'rgba(255, 0, 0, 0.75)';
-        ctx.arc(this.x, this.y, 10, 0, Math.PI * 2, false);
-        ctx.fill();
+        ctx1.biginPath();
+        ctx1.fillStyle = 'rgba(255, 0, 0, 0.75)';
+        ctx1.arc(this.x, this.y, 10, 0, Math.PI * 2, false);
+        ctx1.fill();
     }
 }
 /**
@@ -95,10 +95,10 @@ class PassPoint extends Vector {
     // 表示
     render() {
         if (this.alive == true) {
-            ctx.beginPath();
-            ctx.fillStyle = 'rgba(0, 255, 0, 0.75)';
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-            ctx.fill();
+            ctx1.beginPath();
+            ctx1.fillStyle = 'rgba(0, 255, 0, 0.75)';
+            ctx1.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+            ctx1.fill();
         }
     }
 }

@@ -8,8 +8,8 @@ var MAX_PASS_POINT = 5;
 
 window.addEventListener('load', init);
 
-var canvas;
-var ctx;
+var canvas1;
+var ctx1;
 
 var mouse = new Vector();
 var player = new Player();
@@ -76,14 +76,18 @@ Asset._loadImage = function(asset, onLoad) {
  */
 function init() {
     // スクリーンの初期化
-    canvas = document.getElementById('mainCanvas');
-    ctx = canvas.getContext('2d');
-    canvas.width = SCREEN_WIDTH;
-    canvas.height = SCREEN_HEIGHT;
+    canvas1 = document.getElementById('maincanvas');
+    canvas2 = document.getElementById('buffercanvas');
+    ctx1 = canvas1.getContext('2d');
+    ctx2 = canvas2.getContext('2d');
+    canvas1.width = SCREEN_WIDTH;
+    canvas1.height = SCREEN_HEIGHT;
+    canvas2.width = SCREEN_WIDTH;
+    canvas2.height = SCREEN_HEIGHT;
 
     // イベントの登録
-    canvas.addEventListener('mousemove', mouseMove, true);
-    canvas.addEventListener('mousedown', mouseDown, false);
+    canvas1.addEventListener('mousemove', mouseMove, true);
+    canvas1.addEventListener('mousedown', mouseDown, false);
 
     // アセットの読み込み
     Asset.loadAssets(function() {
@@ -128,27 +132,28 @@ function update(timestamp) {
  */
 function render() {
     // 表示クリア
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
+
+    // バッファ描画
     // エフェクト
-    /*
-    ctx.globalAlpha = 0.1;
-    ctx.fillStyle = '#A9D0F5';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.globalAlpha = 0.3;
-    */
+    ctx2.globalAlpha = 0.3;
+    ctx2.fillStyle = '#fafafa';
+    ctx2.fillRect(0, 0, canvas2.width, canvas2.height);
+    ctx2.globalAlpha = 1;
 
     // テキスト表示
-    ctx.font = '20px "Arial"';
-    ctx.fillStyle = "#00F";
-    ctx.fillText("SCORE:" + score, 320, 20);
+    ctx2.font = '20px "Arial"';
+    ctx2.fillStyle = "#00F";
+    ctx2.fillText("SCORE:" + score, 320, 20);
+
+    // Player表示
+    player.render();
+
+    // フリップ
+    ctx1.drawImage(buffercanvas, 0, 0);
 
     // 通過点の表示
     for (i = 0; i < MAX_PASS_POINT; i++) {
         pass[i].render();
     }
-
-    // Player表示
-    player.render();
-
-
 }

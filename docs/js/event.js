@@ -4,8 +4,8 @@
 
 function mouseMove(event) {
     // マウスカーソル座標の更新
-    mouse.x = event.clientX - canvas.offsetLeft;
-    mouse.y = event.clientY - canvas.offsetTop;
+    mouse.x = event.clientX - canvas1.offsetLeft;
+    mouse.y = event.clientY - canvas1.offsetTop;
 }
 
 function mouseDown(event) {
