@@ -140,7 +140,7 @@ function render() {
     // テキスト表示
     ctx.font = '20px "Arial"';
     ctx.fillStyle = "#00F";
-    ctx.fillText("SCORE:" + delta, 320, 20);
+    ctx.fillText("SCORE:" + score, 320, 20);
 
     // 通過点の表示
     for (i = 0; i < MAX_PASS_POINT; i++) {
