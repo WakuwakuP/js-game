@@ -12,8 +12,6 @@ var ctx;
 
 var mouse = new Vector();
 var player = new Player();
-var scoreText = new Text(340, 25, "SCORE:");
-var score = new Text(400, 25, "0");
 
 
 // モーション用変数
@@ -108,15 +106,19 @@ function update(timestamp) {
  */
 function render() {
     // 表示クリア
-    //ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // 背景表示
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // エフェクト
+    /*
     ctx.globalAlpha = 0.1;
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = '#A9D0F5';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.globalAlpha = 0.3;
+    */
+
     // テキスト表示
-    scoreText.render();
-    score.render();
+    ctx.font = '20px "Arial"';
+    ctx.fillStyle = "#00F";
+    ctx.fillText("SCORE:" + delta, 320, 20);
 
     // Player表示
     player.render();

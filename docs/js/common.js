@@ -68,28 +68,6 @@ class Enemy extends Vector {
     }
 }
 
-/**
- * Text class
- */
-class Text {
-    constructor(x, y, txt) {
-        var x = x;
-        var y = y;
-        var str = txt;
-        var color = 'rgba(0, 0, 0, 0.75)';
-    }
-
-    update(txt) {
-        this.str = txt;
-    }
-
-    // textの表示
-    render() {
-        ctx.font = 'normal 40px "Arial"';
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
-        ctx.fillText(this.str, this.x, this.y);
-    }
-}
 
 function speedLimit(dist) {
     if (dist > 0) {
