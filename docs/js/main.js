@@ -111,7 +111,6 @@ function update(timestamp) {
 
     // プレイヤーと通過点の当たり判定
     for (i = 0; i < MAX_PASS_POINT; i++) {
-        console.log(player.dist(pass[i]));
         if (player.dist(pass[i]) <= player.size + pass[i].size) {
             pass[i].alive = false;
             score += 100;
