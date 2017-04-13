@@ -12,6 +12,9 @@ var ctx;
 
 var mouse = new Vector();
 var player = new Player();
+var scoreText = new Text(340, 25, "SCORE:");
+var score = new Text(400, 25, "0");
+
 
 // モーション用変数
 var lastTimestamp = null;
@@ -105,8 +108,15 @@ function update(timestamp) {
  */
 function render() {
     // 表示クリア
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //ctx.clearRect(0, 0, canvas.width, canvas.height);
     // 背景表示
+    ctx.globalAlpha = 0.1;
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalAlpha = 0.3;
+    // テキスト表示
+    scoreText.render();
+    score.render();
 
     // Player表示
     player.render();
