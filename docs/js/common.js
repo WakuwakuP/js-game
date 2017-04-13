@@ -6,6 +6,13 @@ class Vector {
         this.x = 0;
         this.y = 0;
     }
+
+    // 距離を計算
+    dist(aPoint) {
+        var x2 = (aPoint.x - this.x) * (aPoint.x - this.x);
+        var y2 = (aPoint.y - this.y) * (aPoint.y - this.y);
+        return Math.sqrt(x2 + y2);
+    }
 }
 /**
  * Player class
@@ -14,26 +21,24 @@ class Player extends Vector {
     constructor() {
         super();
         this.move = new Vector();
+        this.size = 10;
         this.alive = true;
+        this.resistance = 6;
     }
 
-    dist(Vector) {
-            var x2 = (aPoint.x - this.x) * (aPoint.x - this.x);
-            var y2 = (aPoint.y - this.y) * (aPoint.y - this.y);
-            return Math.sqrt(x2 + y2);
-        }
-        // Playerの移動量を決定する
+    // Playerの移動量を決定する
     movement(delta) {
-            this.move.x += ((mouse.x - this.x) - (6 * this.move.x)) / 5 * delta;
-            this.move.y += ((mouse.y - this.y) - (6 * this.move.y)) / 5 * delta;
-            this.x += this.move.x;
-            this.y += this.move.y;
-        }
-        // Playerの表示をする
+        this.move.x += ((mouse.x - this.x) - (this.resistance * this.move.x)) / 5 * delta;
+        this.move.y += ((mouse.y - this.y) - (this.resistance * this.move.y)) / 5 * delta;
+        this.x += this.move.x;
+        this.y += this.move.y;
+    }
+
+    // Playerの表示をする
     render() {
         ctx.beginPath();
         ctx.fillStyle = 'rgba(0, 0, 255, 0.75)';
-        ctx.arc(player.x, player.y, 10, 0, Math.PI * 2, false);
+        ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2, false);
         ctx.fill();
     }
 }
@@ -65,6 +70,36 @@ class Enemy extends Vector {
         ctx.fillStyle = 'rgba(255, 0, 0, 0.75)';
         ctx.arc(this.x, this.y, 10, 0, Math.PI * 2, false);
         ctx.fill();
+    }
+}
+/**
+ * PassPoint class
+ * 通過点を管理する。
+ */
+class PassPoint extends Vector {
+    constructor() {
+        super();
+        this.size = 20;
+        this.alive = false;
+    }
+
+    // 座標をランダムで指定
+    setPoint() {
+        if (this.alive == false) {
+            this.alive = true;
+            this.x = Math.floor(Math.random() * 701) + 50;
+            this.y = Math.floor(Math.random() * 501) + 50;
+        }
+    }
+
+    // 表示
+    render() {
+        if (this.alive == true) {
+            ctx.beginPath();
+            ctx.fillStyle = 'rgba(0, 255, 0, 0.75)';
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+            ctx.fill();
+        }
     }
 }
 

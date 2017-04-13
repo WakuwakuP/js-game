@@ -4,6 +4,7 @@
 
 var SCREEN_WIDTH = 800;
 var SCREEN_HEIGHT = 600;
+var MAX_PASS_POINT = 5;
 
 window.addEventListener('load', init);
 
@@ -12,11 +13,17 @@ var ctx;
 
 var mouse = new Vector();
 var player = new Player();
+var pass = new Array(MAX_PASS_POINT);
+for (i = 0; i < MAX_PASS_POINT; i++) {
+    pass[i] = new PassPoint();
+}
 
 // モーション用変数
 var lastTimestamp = null;
 var delta = 0; // 前回フレーム時間からの経過時間(単位:秒)
 var timeCount = 0;
+
+var score = 0;
 
 // アセット定義
 var Asset = {};
@@ -75,6 +82,7 @@ function init() {
 
     // イベントの登録
     canvas.addEventListener('mousemove', mouseMove, true);
+    canvas.addEventListener('mousedown', mouseDown, false);
 
     // アセットの読み込み
     Asset.loadAssets(function() {
@@ -93,8 +101,23 @@ function update(timestamp) {
     }
     lastTimestamp = timestamp;
 
-    // ここに移動等を書く
+    // プレイヤーの移動
     player.movement(delta);
+
+    // 通過点の更新
+    for (i = 0; i < MAX_PASS_POINT; i++) {
+        pass[i].setPoint();
+    }
+
+    // プレイヤーと通過点の当たり判定
+    for (i = 0; i < MAX_PASS_POINT; i++) {
+        console.log(player.dist(pass[i]));
+        if (player.dist(pass[i]) <= player.size + pass[i].size) {
+            pass[i].alive = false;
+            score += 100;
+        }
+    }
+
     // ここまで
     requestAnimationFrame(update);
     render();
@@ -108,6 +131,13 @@ function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // 背景表示
 
+    // 通過点の表示
+    for (i = 0; i < MAX_PASS_POINT; i++) {
+        pass[i].render();
+    }
+
     // Player表示
     player.render();
+
+
 }
