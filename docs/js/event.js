@@ -18,6 +18,7 @@ function mouseDown(event) {
       player.move.y = 0 - player.move.y * 1.3;
       break;
     case 'RESULT':
+      window.open('https://twitter.com/share?url=https%3A%2F%2Fwakuwakup.net%2Fjs-game& related=twitterapi%2Ctwitter&hashtags=wakuwakup_game&text=WakuwakuP%20Game%20スコア:'+score+'%20コンボ:'+maxCombo+'%20プレイ時間:'+Math.floor(timeCount), '_blank');
       scene = 'TITLE';
       timeCount = 0;
       life = 3;
