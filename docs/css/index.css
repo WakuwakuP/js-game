@@ -9,3 +9,15 @@ canvas {
 #effectcanvas {
   display: none;
 }
+
+.headline {
+	display: table-cell;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.content {
+  display: table-cell;
+  padding-left: 10px;
+  padding-right: 10px;
+}
