@@ -257,7 +257,7 @@ function render() {
       bufferCtx.font = '80px "Arial"';
       bufferCtx.textAlign = 'center';
       bufferCtx.fillStyle = "#00F";
-      bufferCtx.fillText("TITLE", 400, 200);
+      bufferCtx.fillText("JS GAME", 400, 200);
 
       bufferCtx.font = '40px "Arial"';
       bufferCtx.textAlign = 'center';
