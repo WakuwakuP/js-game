@@ -45,7 +45,7 @@ var maxCombo = 0;
 // アセット定義
 var Asset = {};
 Asset.assets = [
-  //{ type: 'image', name: 'box', src: 'assets/image.png' }
+  //{ type: 'image', name: 'image', src: 'assets/image.png' }
 ];
 
 // 画像
@@ -116,6 +116,7 @@ function init() {
     // ゲームの更新処理を始めるようにする
     requestAnimationFrame(update);
   });
+  requestAnimationFrame(update);
 }
 
 /**
