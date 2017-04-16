@@ -22,6 +22,8 @@ for (i = 0; i < MAX_PASS_POINT; i++) {
   pass[i] = new PassPoint();
 }
 
+// 画面の状態を表す
+var scene = 'TITLE';
 
 // モーション用変数
 var lastTimestamp = null;
@@ -29,6 +31,8 @@ var delta = 0; // 前回フレーム時間からの経過時間(単位:秒)
 var timeCount = 0;
 var fps = 0;
 
+// スコア関連
+var life = 3;
 var score = 0;
 var scoreRate = 0;
 var addScore = 0;
@@ -122,10 +126,6 @@ function update(timestamp) {
   if (lastTimestamp != null) {
     delta = (timestamp - lastTimestamp) / 1000; // ミリ秒を1000で割ると秒になる(1000ミリ秒÷1000は1秒)
     fps = Math.round(1 / delta);
-    timeCount += delta;
-    if (0 < comboTimer){
-      comboTimer -= delta;
-    }
   }
   lastTimestamp = timestamp;
 
@@ -137,25 +137,33 @@ function update(timestamp) {
     pass[i].setPoint();
   }
 
-  // プレイヤーと通過点の当たり判定
-  for (i = 0; i < MAX_PASS_POINT; i++) {
-    if (player.dist(pass[i]) <= player.size + pass[i].size) {
-      pass[i].alive = false;
+  if (scene == 'GAME'){
+    // 時間計測
+    timeCount += delta;
+    if (0 < comboTimer){
+      comboTimer -= delta;
+    }
 
-      // スコア加算
-      scoreRate = 1 + comboCount / 50;
-      comboScore += 500 * scoreRate;
+    // プレイヤーと通過点の当たり判定
+    for (i = 0; i < MAX_PASS_POINT; i++) {
+      if (player.dist(pass[i]) <= player.size + pass[i].size) {
+        pass[i].alive = false;
 
-      // コンボ数増加
-      comboCount += 1;
+        // スコア加算
+        scoreRate = 1 + comboCount / 50;
+        comboScore += 500 * scoreRate;
 
-      // コンボフラグ
-      comboFlag = true;
+        // コンボ数増加
+        comboCount += 1;
 
-      // コンボ可能時間リセット
-      comboTimer += 0.5 + 1 / comboCount * 3;
-      if (5 < comboTimer){
-        comboTimer = 5;
+        // コンボフラグ
+        comboFlag = true;
+
+        // コンボ可能時間リセット
+        comboTimer += 0.5 + 1 / comboCount * 3;
+        if (5 < comboTimer){
+          comboTimer = 5;
+        }
       }
     }
   }
@@ -166,6 +174,7 @@ function update(timestamp) {
     addScore += comboScore;
     comboScore = 0;
     comboFlag = false;
+    life -= 1;
   }
 
   // 最大コンボ数の計算
@@ -186,6 +195,9 @@ function update(timestamp) {
     } else {
       score += addScore;
       addScore = 0;
+      if (life <= 0) {
+        scene = 'RESULT';
+      }
     }
   }
 
@@ -208,91 +220,158 @@ function render() {
   effectCtx.fillRect(0, 0, effectcanvas.width, effectcanvas.height);
   effectCtx.globalAlpha = 1;
 
-  // スコア表示
-  effectCtx.font = '18px "Arial"';
-  effectCtx.textAlign = 'end';
-  effectCtx.fillStyle = "#00F";
-  effectCtx.fillText("SCORE:", 310, 20);
+  switch (scene) {
+    case 'GAME':
+      // スコア表示
+      effectCtx.font = '18px "Arial"';
+      effectCtx.textAlign = 'end';
+      effectCtx.fillStyle = "#00F";
+      effectCtx.fillText("SCORE:", 310, 20);
 
-  effectCtx.font = '18px "Arial"';
-  effectCtx.textAlign = 'end';
-  effectCtx.fillStyle = "#00F";
-  effectCtx.fillText(score, 450, 20);
+      effectCtx.font = '18px "Arial"';
+      effectCtx.textAlign = 'end';
+      effectCtx.fillStyle = "#00F";
+      effectCtx.fillText(score, 450, 20);
 
-  // スコア加算エフェクト
-  if (0 < addScore) {
-    effectCtx.font = '18px "Arial"';
-    effectCtx.textAlign = 'end';
-    effectCtx.fillStyle = "#00F";
-    effectCtx.fillText(addScore, 450, 40);
+      // スコア加算エフェクト
+      if (0 < addScore) {
+        effectCtx.font = '18px "Arial"';
+        effectCtx.textAlign = 'end';
+        effectCtx.fillStyle = "#00F";
+        effectCtx.fillText(addScore, 450, 40);
+      }
+    default:
+      // Player表示
+      player.render();
   }
-  // Player表示
-  player.render();
 
   // エフェクトをバッファに描画
   bufferCtx.drawImage(effectcanvas, 0, 0);
 
-  // 通過点の表示
-  for (i = 0; i < MAX_PASS_POINT; i++) {
-    pass[i].render();
+  switch (scene) {
+    case 'TITLE':
+      // スタート画面
+      // タイトル
+      bufferCtx.font = '80px "Arial"';
+      bufferCtx.textAlign = 'center';
+      bufferCtx.fillStyle = "#00F";
+      bufferCtx.fillText("TITLE", 400, 200);
+      break;
+    case 'GAME':
+      // ゲーム中
+      // 通過点の表示
+      for (i = 0; i < MAX_PASS_POINT; i++) {
+        pass[i].render();
+      }
+
+      // fps表示
+      bufferCtx.font = '18px "Arial"';
+      bufferCtx.textAlign = 'end';
+      bufferCtx.fillStyle = "#00F";
+      bufferCtx.fillText("FPS:" + fps, 800, 600);
+
+      // 経過時間表示
+      bufferCtx.font = '18px "Arial"';
+      bufferCtx.textAlign = 'start';
+      bufferCtx.fillStyle = "#00F";
+      bufferCtx.fillText("TIME:" + Math.floor(timeCount), 700, 20);
+
+      // 最大コンボ数の表示
+      bufferCtx.font = '18px "Arial"';
+      bufferCtx.textAlign = 'end';
+      bufferCtx.fillStyle = "#00F";
+      bufferCtx.fillText("MAX COMBO:", 610, 20);
+
+      bufferCtx.font = '18px "Arial"';
+      bufferCtx.textAlign = 'end';
+      bufferCtx.fillStyle = "#00F";
+      bufferCtx.fillText(maxCombo, 680, 20);
+
+      // ライフの表示
+      bufferCtx.font = '18px "Arial"';
+      bufferCtx.textAlign = 'start';
+      bufferCtx.fillStyle = '#00F';
+      bufferCtx.fillText('LIFE: ' + life, 20, 20)
+
+      // コンボ継続時
+      if (1 < comboCount) {
+        // コンボ表示
+        bufferCtx.font = '40px "Arial"';
+        bufferCtx.textAlign = 'start';
+        bufferCtx.fillStyle = "#00F";
+        bufferCtx.fillText(comboCount + "Combo!!", 20, 100);
+
+        // コンボ可能時間の表示
+        bufferCtx.font = '20px "Arial"';
+        bufferCtx.textAlign = 'start';
+        bufferCtx.fillStyle = "#00F";
+        bufferCtx.fillText(floatFormat(comboTimer, 2).toFixed(2) + 's', 30, 120);
+
+        // スコア倍率の表示
+        bufferCtx.font = '20px "Arial"';
+        bufferCtx.textAlign = 'start';
+        bufferCtx.fillStyle = "#00F";
+        bufferCtx.fillText('x' + floatFormat(scoreRate, 2).toFixed(2), 100, 120);
+      }
+
+      // コンボ時に稼いだスコアを表示
+      if (comboFlag) {
+        bufferCtx.font = '18px "Arial"';
+        bufferCtx.textAlign = 'end';
+        bufferCtx.fillStyle = "#00F";
+        bufferCtx.fillText("COMBO SCORE:", 310, 60);
+
+        bufferCtx.font = '18px "Arial"';
+        bufferCtx.textAlign = 'end';
+        bufferCtx.fillStyle = "#00F";
+        bufferCtx.fillText(comboScore, 450, 60);
+      }
+      break;
+    case 'RESULT':
+      // RESULT画面
+      bufferCtx.font = '80px "Arial"';
+      bufferCtx.textAlign = 'center';
+      bufferCtx.fillStyle = "#00F";
+      bufferCtx.fillText("GAME OVER", 400, 200);
+
+      bufferCtx.font = '40px "Arial"';
+      bufferCtx.textAlign = 'center';
+      bufferCtx.fillStyle = "#00F";
+      bufferCtx.fillText("RESULT", 400, 300);
+
+      bufferCtx.font = '30px "Arial"';
+      bufferCtx.textAlign = 'end';
+      bufferCtx.fillStyle = "#00F";
+      bufferCtx.fillText("SCORE:", 380, 340);
+
+      bufferCtx.font = '30px "Arial"';
+      bufferCtx.textAlign = 'start';
+      bufferCtx.fillStyle = "#00F";
+      bufferCtx.fillText(score, 420, 340);
+
+      bufferCtx.font = '30px "Arial"';
+      bufferCtx.textAlign = 'end';
+      bufferCtx.fillStyle = "#00F";
+      bufferCtx.fillText("COMBO:", 380, 370);
+
+      bufferCtx.font = '30px "Arial"';
+      bufferCtx.textAlign = 'start';
+      bufferCtx.fillStyle = "#00F";
+      bufferCtx.fillText(maxCombo, 420, 370);
+
+      bufferCtx.font = '30px "Arial"';
+      bufferCtx.textAlign = 'end';
+      bufferCtx.fillStyle = "#00F";
+      bufferCtx.fillText("PLAY TIME:", 380, 400);
+
+      bufferCtx.font = '30px "Arial"';
+      bufferCtx.textAlign = 'start';
+      bufferCtx.fillStyle = "#00F";
+      bufferCtx.fillText(Math.floor(timeCount) + 's', 420, 400);
+      break;
   }
 
-  // fps表示
-  bufferCtx.font = '18px "Arial"';
-  bufferCtx.textAlign = 'start';
-  bufferCtx.fillStyle = "#00F";
-  bufferCtx.fillText("FPS:" + fps, 20, 20);
 
-  // 経過時間表示
-  bufferCtx.font = '18px "Arial"';
-  bufferCtx.textAlign = 'start';
-  bufferCtx.fillStyle = "#00F";
-  bufferCtx.fillText("TIME:" + Math.floor(timeCount), 700, 20);
-
-  // 最大コンボ数の表示
-  bufferCtx.font = '18px "Arial"';
-  bufferCtx.textAlign = 'end';
-  bufferCtx.fillStyle = "#00F";
-  bufferCtx.fillText("MAX COMBO:", 610, 20);
-
-  bufferCtx.font = '18px "Arial"';
-  bufferCtx.textAlign = 'end';
-  bufferCtx.fillStyle = "#00F";
-  bufferCtx.fillText(maxCombo, 680, 20);
-
-  // コンボ継続時
-  if (1 < comboCount) {
-    // コンボ表示
-    bufferCtx.font = '40px "Arial"';
-    bufferCtx.textAlign = 'start';
-    bufferCtx.fillStyle = "#00F";
-    bufferCtx.fillText(comboCount + "Combo!!", 20, 100);
-
-    // コンボ可能時間の表示
-    bufferCtx.font = '20px "Arial"';
-    bufferCtx.textAlign = 'start';
-    bufferCtx.fillStyle = "#00F";
-    bufferCtx.fillText(floatFormat(comboTimer, 2).toFixed(2) + 's', 30, 120);
-
-    // スコア倍率の表示
-    bufferCtx.font = '20px "Arial"';
-    bufferCtx.textAlign = 'start';
-    bufferCtx.fillStyle = "#00F";
-    bufferCtx.fillText('x' + floatFormat(scoreRate, 2).toFixed(2), 100, 120);
-  }
-
-  // コンボ時に稼いだスコアを表示
-  if (comboFlag) {
-    bufferCtx.font = '18px "Arial"';
-    bufferCtx.textAlign = 'end';
-    bufferCtx.fillStyle = "#00F";
-    bufferCtx.fillText("COMBO SCORE:", 310, 60);
-
-    bufferCtx.font = '18px "Arial"';
-    bufferCtx.textAlign = 'end';
-    bufferCtx.fillStyle = "#00F";
-    bufferCtx.fillText(comboScore, 450, 60);
-  }
   // フリップ
   ctx.drawImage(buffercanvas, 0, 0);
 }
