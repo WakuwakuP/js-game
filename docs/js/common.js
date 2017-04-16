@@ -112,6 +112,24 @@ function floatFormat( number, n ) {
   return Math.round( number * _pow ) / _pow ;
 }
 
+/**
+ * シェアボタン生成
+ */
+function shareButtonCreate () {
+  var shareDiv = document.getElementById('sharebutton');
+
+  shareDiv.innerHTML = '<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://wakuwakup.net/wakuwakup-game/" data-text="SCORE:' + score + '¥n' + maxCombo + 'コンボ¥nプレイ時間:' + Math.floor(timeCount) + '秒" data-lang="ja" data-size="large" data-hashtags="wakuwakup-game">ツイートする</a>';
+
+  !function(d,s,id){
+    var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location)?'http':'https';
+    if (!d.getElementById(id)) {
+      js = d.createElement(s);
+      js.id = id;
+      js.src = p + '://platform.twitter.com/widgets.js';
+      fjs.parentNode.insertBefore(js, fjs);
+    }
+  }(document, 'script', 'twitter-wjs');
+}
 
 function speedLimit(dist) {
   if (dist > 0) {

@@ -195,10 +195,11 @@ function update(timestamp) {
     } else {
       score += addScore;
       addScore = 0;
-      if (life <= 0) {
-        scene = 'RESULT';
-      }
     }
+  }
+  if (life <= 0 && addScore <= 0) {
+    scene = 'RESULT';
+    shareButtonCreate();
   }
 
   // ここまで

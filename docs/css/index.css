@@ -3,9 +3,9 @@ canvas {
 }
 
 #buffercanvas {
-  visibility: hidden;
+  display: none;
 }
 
 #effectcanvas {
-  visibility: hidden;
+  display: none;
 }
