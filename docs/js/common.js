@@ -42,36 +42,7 @@ class Player extends Vector {
     effectCtx.fill();
   }
 }
-/**
-* Enemy class
-*/
-class Enemy extends Vector {
-  constructor() {
-    super();
-    this.move = new Vector();
-    this.level = 1;
-    this.alive = true;
-  }
 
-  // Enemyの移動量
-  movement(delta) {
-    switch (level) {
-      case 1:
-      //ここにlevel01の行動を書く
-      break;
-      default:
-      break;
-    }
-  }
-
-  // Enemyの表示
-  render() {
-    ctx.biginPath();
-    ctx.fillStyle = 'rgba(255, 0, 0, 0.75)';
-    ctx.arc(this.x, this.y, 10, 0, Math.PI * 2, false);
-    ctx.fill();
-  }
-}
 /**
 * PassPoint class
 * 通過点を管理する。
@@ -110,36 +81,4 @@ function floatFormat( number, n ) {
   var _pow = Math.pow( 10 , n ) ;
 
   return Math.round( number * _pow ) / _pow ;
-}
-
-/**
- * シェアボタン生成
- */
-function shareButtonCreate () {
-  var shareDiv = document.getElementById('sharebutton');
-
-  shareDiv.innerHTML = '<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://wakuwakup.net/wakuwakup-game/" data-text="SCORE:' + score + '¥n' + maxCombo + 'コンボ¥nプレイ時間:' + Math.floor(timeCount) + '秒" data-lang="ja" data-size="large" data-hashtags="wakuwakup-game">ツイートする</a>';
-
-  !function(d,s,id){
-    var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location)?'http':'https';
-    if (!d.getElementById(id)) {
-      js = d.createElement(s);
-      js.id = id;
-      js.src = p + '://platform.twitter.com/widgets.js';
-      fjs.parentNode.insertBefore(js, fjs);
-    }
-  }(document, 'script', 'twitter-wjs');
-}
-
-function speedLimit(dist) {
-  if (dist > 0) {
-    if (dist > 20) {
-      dist = 20;
-    }
-  } else {
-    if (-20 > dist) {
-      dist = -20;
-    }
-  }
-  return dist;
 }

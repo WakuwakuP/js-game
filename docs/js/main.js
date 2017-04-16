@@ -199,7 +199,7 @@ function update(timestamp) {
   }
   if (life <= 0 && addScore <= 0) {
     scene = 'RESULT';
-    shareButtonCreate();
+    window.open('https://twitter.com/share?url=https%3A%2F%2Fwakuwakup.net%2Fjs-game-test& related=twitterapi%2Ctwitter&hashtags=wakuwakup_game&text=WakuwakuP%20Game%20スコア:'+score+'%20コンボ:'+maxCombo+'%20プレイ時間:'+Math.floor(timeCount));
   }
 
   // ここまで
